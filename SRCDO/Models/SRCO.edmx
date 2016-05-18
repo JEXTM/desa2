@@ -1,0 +1,454 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SRCOModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="client">
+          <Key>
+            <PropertyRef Name="idUser" />
+          </Key>
+          <Property Name="idUser" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="lastname" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="field">
+          <Key>
+            <PropertyRef Name="idField" />
+          </Key>
+          <Property Name="idField" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="idType" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="price" Type="numeric" Precision="6" Scale="2" />
+        </EntityType>
+        <EntityType Name="reserve">
+          <Key>
+            <PropertyRef Name="idReserve" />
+          </Key>
+          <Property Name="idReserve" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUser" Type="int" Nullable="false" />
+          <Property Name="idField" Type="int" Nullable="false" />
+          <Property Name="idStatus" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="dateBegin" Type="datetime" Nullable="false" />
+          <Property Name="dateEnd" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="idRole" />
+          </Key>
+          <Property Name="idRole" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="role" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="status">
+          <Key>
+            <PropertyRef Name="idStatus" />
+          </Key>
+          <Property Name="idStatus" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="type">
+          <Key>
+            <PropertyRef Name="idType" />
+          </Key>
+          <Property Name="idType" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="type" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="iduser" />
+          </Key>
+          <Property Name="iduser" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nickname" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="pass" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="idRole" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_client_user">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="client" Type="Self.client" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="iduser" />
+            </Principal>
+            <Dependent Role="client">
+              <PropertyRef Name="idUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_field_type">
+          <End Role="type" Type="Self.type" Multiplicity="1" />
+          <End Role="field" Type="Self.field" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type">
+              <PropertyRef Name="idType" />
+            </Principal>
+            <Dependent Role="field">
+              <PropertyRef Name="idType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_reserve_client">
+          <End Role="client" Type="Self.client" Multiplicity="1" />
+          <End Role="reserve" Type="Self.reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="client">
+              <PropertyRef Name="idUser" />
+            </Principal>
+            <Dependent Role="reserve">
+              <PropertyRef Name="idUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_reserve_field">
+          <End Role="field" Type="Self.field" Multiplicity="1" />
+          <End Role="reserve" Type="Self.reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="field">
+              <PropertyRef Name="idField" />
+            </Principal>
+            <Dependent Role="reserve">
+              <PropertyRef Name="idField" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_reserve_status">
+          <End Role="status" Type="Self.status" Multiplicity="1" />
+          <End Role="reserve" Type="Self.reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status">
+              <PropertyRef Name="idStatus" />
+            </Principal>
+            <Dependent Role="reserve">
+              <PropertyRef Name="idStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_role">
+          <End Role="role" Type="Self.role" Multiplicity="1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="idRole" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="idRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="newClient" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="money" />
+        <EntityContainer Name="SRCOModelStoreContainer">
+          <EntitySet Name="client" EntityType="Self.client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="field" EntityType="Self.field" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="reserve" EntityType="Self.reserve" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="status" EntityType="Self.status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="type" EntityType="Self.type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_client_user" Association="Self.FK_client_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="client" EntitySet="client" />
+          </AssociationSet>
+          <AssociationSet Name="FK_field_type" Association="Self.FK_field_type">
+            <End Role="type" EntitySet="type" />
+            <End Role="field" EntitySet="field" />
+          </AssociationSet>
+          <AssociationSet Name="FK_reserve_client" Association="Self.FK_reserve_client">
+            <End Role="client" EntitySet="client" />
+            <End Role="reserve" EntitySet="reserve" />
+          </AssociationSet>
+          <AssociationSet Name="FK_reserve_field" Association="Self.FK_reserve_field">
+            <End Role="field" EntitySet="field" />
+            <End Role="reserve" EntitySet="reserve" />
+          </AssociationSet>
+          <AssociationSet Name="FK_reserve_status" Association="Self.FK_reserve_status">
+            <End Role="status" EntitySet="status" />
+            <End Role="reserve" EntitySet="reserve" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_role" Association="Self.FK_user_role">
+            <End Role="role" EntitySet="role" />
+            <End Role="user" EntitySet="user" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SRCOModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="client">
+          <Key>
+            <PropertyRef Name="idUser" />
+          </Key>
+          <Property Name="idUser" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="user" Relationship="Self.FK_client_user" FromRole="client" ToRole="user" />
+          <NavigationProperty Name="reserve" Relationship="Self.FK_reserve_client" FromRole="client" ToRole="reserve" />
+        </EntityType>
+        <EntityType Name="field">
+          <Key>
+            <PropertyRef Name="idField" />
+          </Key>
+          <Property Name="idField" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idType" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="price" Type="Decimal" Precision="6" Scale="2" />
+          <NavigationProperty Name="type" Relationship="Self.FK_field_type" FromRole="field" ToRole="type" />
+          <NavigationProperty Name="reserve" Relationship="Self.FK_reserve_field" FromRole="field" ToRole="reserve" />
+        </EntityType>
+        <EntityType Name="reserve">
+          <Key>
+            <PropertyRef Name="idReserve" />
+          </Key>
+          <Property Name="idReserve" Type="Int32" Nullable="false" />
+          <Property Name="idUser" Type="Int32" Nullable="false" />
+          <Property Name="idField" Type="Int32" Nullable="false" />
+          <Property Name="idStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="dateBegin" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="dateEnd" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="client" Relationship="Self.FK_reserve_client" FromRole="reserve" ToRole="client" />
+          <NavigationProperty Name="field" Relationship="Self.FK_reserve_field" FromRole="reserve" ToRole="field" />
+          <NavigationProperty Name="status" Relationship="Self.FK_reserve_status" FromRole="reserve" ToRole="status" />
+        </EntityType>
+        <EntityType Name="role">
+          <Key>
+            <PropertyRef Name="idRole" />
+          </Key>
+          <Property Name="idRole" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="role1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="Self.FK_user_role" FromRole="role" ToRole="user" />
+        </EntityType>
+        <EntityType Name="status">
+          <Key>
+            <PropertyRef Name="idStatus" />
+          </Key>
+          <Property Name="idStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="status1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="reserve" Relationship="Self.FK_reserve_status" FromRole="status" ToRole="reserve" />
+        </EntityType>
+        <EntityType Name="type">
+          <Key>
+            <PropertyRef Name="idType" />
+          </Key>
+          <Property Name="idType" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="type1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="field" Relationship="Self.FK_field_type" FromRole="type" ToRole="field" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="iduser" />
+          </Key>
+          <Property Name="iduser" Type="Int32" Nullable="false" />
+          <Property Name="nickname" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pass" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idRole" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="client" Relationship="Self.FK_client_user" FromRole="user" ToRole="client" />
+          <NavigationProperty Name="role" Relationship="Self.FK_user_role" FromRole="user" ToRole="role" />
+        </EntityType>
+        <Association Name="FK_client_user">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="client" Type="Self.client" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="iduser" />
+            </Principal>
+            <Dependent Role="client">
+              <PropertyRef Name="idUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_reserve_client">
+          <End Role="client" Type="Self.client" Multiplicity="1" />
+          <End Role="reserve" Type="Self.reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="client">
+              <PropertyRef Name="idUser" />
+            </Principal>
+            <Dependent Role="reserve">
+              <PropertyRef Name="idUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_field_type">
+          <End Role="type" Type="Self.type" Multiplicity="1" />
+          <End Role="field" Type="Self.field" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type">
+              <PropertyRef Name="idType" />
+            </Principal>
+            <Dependent Role="field">
+              <PropertyRef Name="idType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_reserve_field">
+          <End Role="field" Type="Self.field" Multiplicity="1" />
+          <End Role="reserve" Type="Self.reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="field">
+              <PropertyRef Name="idField" />
+            </Principal>
+            <Dependent Role="reserve">
+              <PropertyRef Name="idField" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_reserve_status">
+          <End Role="status" Type="Self.status" Multiplicity="1" />
+          <End Role="reserve" Type="Self.reserve" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status">
+              <PropertyRef Name="idStatus" />
+            </Principal>
+            <Dependent Role="reserve">
+              <PropertyRef Name="idStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_user_role">
+          <End Role="role" Type="Self.role" Multiplicity="1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="role">
+              <PropertyRef Name="idRole" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="idRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SRCOEntities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="client" EntityType="Self.client" />
+          <EntitySet Name="field" EntityType="Self.field" />
+          <EntitySet Name="reserve" EntityType="Self.reserve" />
+          <EntitySet Name="role" EntityType="Self.role" />
+          <EntitySet Name="status" EntityType="Self.status" />
+          <EntitySet Name="type" EntityType="Self.type" />
+          <EntitySet Name="user" EntityType="Self.user" />
+          <AssociationSet Name="FK_client_user" Association="Self.FK_client_user">
+            <End Role="user" EntitySet="user" />
+            <End Role="client" EntitySet="client" />
+          </AssociationSet>
+          <AssociationSet Name="FK_reserve_client" Association="Self.FK_reserve_client">
+            <End Role="client" EntitySet="client" />
+            <End Role="reserve" EntitySet="reserve" />
+          </AssociationSet>
+          <AssociationSet Name="FK_field_type" Association="Self.FK_field_type">
+            <End Role="type" EntitySet="type" />
+            <End Role="field" EntitySet="field" />
+          </AssociationSet>
+          <AssociationSet Name="FK_reserve_field" Association="Self.FK_reserve_field">
+            <End Role="field" EntitySet="field" />
+            <End Role="reserve" EntitySet="reserve" />
+          </AssociationSet>
+          <AssociationSet Name="FK_reserve_status" Association="Self.FK_reserve_status">
+            <End Role="status" EntitySet="status" />
+            <End Role="reserve" EntitySet="reserve" />
+          </AssociationSet>
+          <AssociationSet Name="FK_user_role" Association="Self.FK_user_role">
+            <End Role="role" EntitySet="role" />
+            <End Role="user" EntitySet="user" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SRCOModelStoreContainer" CdmEntityContainer="SRCOEntities3">
+          <EntitySetMapping Name="client">
+            <EntityTypeMapping TypeName="SRCOModel.client">
+              <MappingFragment StoreEntitySet="client">
+                <ScalarProperty Name="idUser" ColumnName="idUser" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="field">
+            <EntityTypeMapping TypeName="SRCOModel.field">
+              <MappingFragment StoreEntitySet="field">
+                <ScalarProperty Name="idField" ColumnName="idField" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="idType" ColumnName="idType" />
+                <ScalarProperty Name="price" ColumnName="price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reserve">
+            <EntityTypeMapping TypeName="SRCOModel.reserve">
+              <MappingFragment StoreEntitySet="reserve">
+                <ScalarProperty Name="idReserve" ColumnName="idReserve" />
+                <ScalarProperty Name="idUser" ColumnName="idUser" />
+                <ScalarProperty Name="idField" ColumnName="idField" />
+                <ScalarProperty Name="idStatus" ColumnName="idStatus" />
+                <ScalarProperty Name="dateBegin" ColumnName="dateBegin" />
+                <ScalarProperty Name="dateEnd" ColumnName="dateEnd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="role">
+            <EntityTypeMapping TypeName="SRCOModel.role">
+              <MappingFragment StoreEntitySet="role">
+                <ScalarProperty Name="idRole" ColumnName="idRole" />
+                <ScalarProperty Name="role1" ColumnName="role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="status">
+            <EntityTypeMapping TypeName="SRCOModel.status">
+              <MappingFragment StoreEntitySet="status">
+                <ScalarProperty Name="idStatus" ColumnName="idStatus" />
+                <ScalarProperty Name="status1" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="type">
+            <EntityTypeMapping TypeName="SRCOModel.type">
+              <MappingFragment StoreEntitySet="type">
+                <ScalarProperty Name="idType" ColumnName="idType" />
+                <ScalarProperty Name="type1" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user">
+            <EntityTypeMapping TypeName="SRCOModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="iduser" ColumnName="iduser" />
+                <ScalarProperty Name="nickname" ColumnName="nickname" />
+                <ScalarProperty Name="pass" ColumnName="pass" />
+                <ScalarProperty Name="idRole" ColumnName="idRole" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

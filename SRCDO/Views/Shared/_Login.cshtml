@@ -1,0 +1,49 @@
+﻿@*@model SRCDO.Models.user*@
+
+@*Verificamos si el usuario ah iniciado session*@
+@if (HttpContext.Current.Session["usuario"] == null)
+{
+    using (Html.BeginForm("Login", "Home",FormMethod.Post))
+    {
+
+  
+        <div class="modal fade in" id="login" tabindex="-1" role="dialog" aria-hidden="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">LOGIN</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <span>USUARIO</span>
+                                    @*@Html.TextBoxFor(m => m.nickname, new { @class = "form-control" })*@
+                                    <input type="text" id="txt_nickname" name="txt_nickname" class="form-control" />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <span>PASSWORD</span>
+                                    @*@Html.PasswordFor(m => m.pass, new { @class = "form-control" })*@
+                                    <input type="password" id="txt_password" name="txt_password" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">CERRAR</button>
+                        <button type="submit" class="btn btn-outline btn-success">INICIAR SESIÓN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+    }
+}

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SRCOModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="cliente">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="nchar" MaxLength="5" Nullable="false" />
+    <Property Name="nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="apellido" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="distrito" Type="nchar" MaxLength="3" />
+  </EntityType>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="nchar" MaxLength="5" Nullable="false" />
+    <Property Name="usuario" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="pass" Type="nvarchar" MaxLength="10" Nullable="false" />
+    <Property Name="rol" Type="nchar" MaxLength="1" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_cliente_usuario">
+    <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
+    <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="cliente">
+        <PropertyRef Name="id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SRCOModelStoreContainer">
+    <EntitySet Name="cliente" EntityType="Self.cliente" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_cliente_usuario" Association="Self.FK_cliente_usuario">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="cliente" EntitySet="cliente" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

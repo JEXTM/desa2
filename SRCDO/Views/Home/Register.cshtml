@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+@model SRCDO.Models.ElClient
+
+<h2 class="text-center">Register</h2>
+
+@using (Html.BeginForm("Register", "Client", new { @class = "form" }))
+{
+
+    <br />
+     
+    <div class="form-group">
+        <div class="col-md-3">
+            <label for="nickname">Usuario: </label>
+        </div>
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.nickname, new { @class = "form-control" })
+        </div>
+    </div>
+     <br />
+    <div class="form-group">
+        <div class="col-md-3">
+            <label for="password">Password: </label>
+        </div>
+        <div class="col-md-9">
+            @Html.PasswordFor(m => m.password, new { @class = "form-control" })
+        </div> 
+    </div>
+    <div class="form-group">
+        <div class="col-md-3">
+            <label for="name">Nombre: </label>
+        </div>
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.name, new { @class = "form-control" })
+        </div> 
+    </div>
+    <div class="form-group">
+        <div class="col-md-3">
+            <label for="lastname">Apellido: </label>
+        </div>
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.lastname, new { @class = "form-control" })
+        </div> 
+    </div>
+
+     <div class="form-group">
+        <div class="col-md-3">
+            <label for="address">Direccion: </label>
+        </div>
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.address, new { @class = "form-control" })
+        </div> 
+    </div>
+     <div class="form-group">
+        <div class="col-md-3">
+            <label for="email">Email: </label>
+        </div>
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
+        </div> 
+    </div>
+    <br />
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+                <input type="submit" class="btn btn-outline btn-primary col-md-12 col-xs-12 col-sm-12" value="REGISTRAR" />
+            </div>
+        </div>
+}
